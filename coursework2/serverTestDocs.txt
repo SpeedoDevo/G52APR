@@ -1,0 +1,79 @@
+As only the RequestHandler's processRequest() method has meaningful returns, it is the only class that can be properly tested with JUnit. I tried to think about as many cases as possible. For the network testing I used a Firefox add-on called "HttpRequester" (about the same as Postman in Chrome) to send valid requests. For invalid ones I used putty through a raw connection.  When using putty I tried to break the server as many ways as possible. I was even able to test the time-out behaviour by not sending anything for 60 seconds. I also made a concurrency penetration test using the previously created client (ServerPenTest.java in the client submission) where I send 10000 requests in separate threads. I also used a software called "Siege" to penetrate the server, it could easily deal with 100+ concurrent connections. Since now we return the headers that change on every request I used the method .contains() as I couldn't get regexes working with JUnit.
+
+getDirectory
+Headerless request to a directory, should return 403.
+
+getFileNoHeaders
+Headerless request to a file, should return 200.
+
+getFileNotFoundNoHeaders
+Headerless request to a non-existent file, should return 404.
+
+getFileModified
+GET request to a file with an If-Modified-Since header, should return 200.
+
+getFileNotModified
+GET request to a file with an If-Modified-Since header, should return 304.
+
+getFileNotFoundConditional
+GET request to a non-existent file with an If-Modified-Since header, should return 404.
+
+getDirectoryConditional
+GET request to a directory with an If-Modified-Since header, should return 403.
+
+getProxy
+GET to a full URL (http://goo.gl/), should return 400.
+
+get09Directory
+Simple GET to a directory, should return 400.
+
+get09File
+Simple GET to a file, should return only the file.
+
+get09FileNotFound
+Simple GET to a file, should return 404.
+
+get11Directory
+HTTP/1.1 request to a directory, should return 400.
+
+get11File
+HTTP/1.1 request to a file, should return 400.
+
+get11NotFound
+HTTP/1.1 request to a non-existent file, should return 400.
+
+headDirectory
+HEAD to a directory, should return 403.
+
+headFile
+HEAD to a file, should return 200.
+
+headNotFound
+HEAD to a non-existent file, should return 404.
+
+headDirectoryConditional
+HEAD with an If-Modified-Since header to a directory, should return 403.
+
+headFileConditional
+HEAD with an If-Modified-Since header to a file, should return 200.
+
+headNotFoundConditional
+HEAD with an If-Modified-Since header to a non-existent file, should return 404.
+
+rabble
+Completely invalid request, should return 400.
+
+empty
+Empty request, should return 400.
+
+postDirectory
+POST to a directory, should return 400.
+
+postFile
+POST to a file, should return 201.
+
+postFileExists9
+POST to an already existing file, should return the same GET (200).
+
+postFileCreation
+Check whether a POSTed file is accessible after creating.
